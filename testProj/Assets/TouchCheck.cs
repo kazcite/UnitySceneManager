@@ -12,7 +12,9 @@ public class TouchCheck : MonoBehaviour {
 	void Update () {
 #if UNITY_EDITOR
 		if( Input.GetMouseButtonDown(0) ) {
-			Application.LoadLevelAdditive( "scene2" );
+			GameObject go = GameObject.Find( "SceneMerger" );
+			go.GetComponent<SceneMerger>().SetSceneActive( "scene1", false );
+			go.GetComponent<SceneMerger>().SetSceneActive( "scene2", true );
 		}
 #elif (UNITY_IPHONE || UNITY_ANDROID)
 		switch(Input.GetTouch(0).phase)

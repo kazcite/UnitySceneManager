@@ -13,39 +13,27 @@ public class SceneMerger : MonoBehaviour {
 	IEnumerator LoadScenes() {
 		
 		foreach (string sceneName in scenes) {
-			GameObject root = GameObject.Find( sceneName );
-			if( !root ) {
-				GameObject currentScene = GameObject.Find ( "CurrentScene" );
-				GameObject sceneMerger = GameObject.Find ( "SceneMerger" );
-				
-				root = new GameObject( sceneName );
-				
-				GameObject parentScene = null;
-				
-				if( sceneName == scenes[initialScene] ) {
-					parentScene = currentScene;
-					root.SetActive( true );
+			Application.LoadLevelAdditive( sceneName );
+		}
+
+		yield return 0;
+		
+		GameObject currentScene = GameObject.Find ( "CurrentScene" );
+		GameObject sceneMerger = GameObject.Find ( "SceneMerger" );
+		
+		foreach( GameObject go in FindObjectsOfType( typeof(GameObject) ) ) {
+			if( go != currentScene && go != sceneMerger && go.transform.parent == null ) {
+				if( go.name == scenes[initialScene] ) {
+					go.transform.parent = currentScene.transform;
+					go.SetActive ( true );
 				}else{
-					parentScene = sceneMerger;
-					root.SetActive( false );
-				}
-				
-				root.transform.parent = parentScene.transform;
-				
-				Application.LoadLevelAdditive( sceneName );
-				
-				yield return 0;
-				
-				foreach( GameObject go in FindObjectsOfType( typeof(GameObject) ) ) {
-					if( go != currentScene && go != sceneMerger && go != root && go.transform.parent == null ) {
-						go.transform.parent = root.transform;
-						go.SetActive ( root.activeSelf );
-					}
+					go.transform.parent = sceneMerger.transform;
+					go.SetActive ( false );
 				}
 			}
 		}
 	}
-	
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -54,4 +42,22 @@ public class SceneMerger : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public void SetSceneActive( string sceneName, bool flg )
+	{
+		foreach ( GameObject go in FindObjectsOfTypeAll( typeof(GameObject) ) ) {
+			if( go.name == sceneName ) {
+				go.SetActive( flg );
+				
+				if( flg ) {
+					GameObject currentScene = GameObject.Find ( "CurrentScene" );
+					go.transform.parent = currentScene.transform;
+				}else{
+					GameObject sceneMerger = GameObject.Find ( "SceneMerger" );
+					go.transform.parent = sceneMerger.transform;
+				}
+			}
+		}
+	}
+
 }
