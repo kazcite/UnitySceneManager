@@ -12,17 +12,22 @@ public class SceneMerger : MonoBehaviour {
 	
 	IEnumerator LoadScenes() {
 		
+		// 最初にすべてのシーンを加算読み込み
 		foreach (string sceneName in scenes) {
 			Application.LoadLevelAdditive( sceneName );
 		}
 
+		// 実際に読み込まれるのは1フレーム後なので1フレ待つ
 		yield return 0;
 		
 		GameObject currentScene = GameObject.Find ( "CurrentScene" );
 		GameObject sceneMerger = GameObject.Find ( "SceneMerger" );
 		
+		// 全GameObjectを探索してシーンのトップを探す（シーンファイル名と同じGameObject）
 		foreach( GameObject go in FindObjectsOfType( typeof(GameObject) ) ) {
 			if( go != currentScene && go != sceneMerger && go.transform.parent == null ) {
+				// commonシーンと初期シーンを読み込み
+				// TODO:初期シーンのリスト化、コンストラクタ的なコンポーネントの呼び出し
 				if( go.name == scenes[initialScene] || go.name == "common" ) {
 					go.transform.parent = currentScene.transform;
 					go.SetActive ( true );
@@ -50,9 +55,11 @@ public class SceneMerger : MonoBehaviour {
 				go.SetActive( flg );
 				
 				if( flg ) {
+					// TODO:コンストラクタ的なコンポーネントの呼び出し
 					GameObject currentScene = GameObject.Find ( "CurrentScene" );
 					go.transform.parent = currentScene.transform;
 				}else{
+					// TODO:デストラクタ的なコンポーネントの呼び出し
 					GameObject sceneMerger = GameObject.Find ( "SceneMerger" );
 					go.transform.parent = sceneMerger.transform;
 				}
