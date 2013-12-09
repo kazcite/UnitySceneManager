@@ -23,7 +23,7 @@ public class SceneMerger : MonoBehaviour {
 		
 		foreach( GameObject go in FindObjectsOfType( typeof(GameObject) ) ) {
 			if( go != currentScene && go != sceneMerger && go.transform.parent == null ) {
-				if( go.name == scenes[initialScene] ) {
+				if( go.name == scenes[initialScene] || go.name == "common" ) {
 					go.transform.parent = currentScene.transform;
 					go.SetActive ( true );
 				}else{
