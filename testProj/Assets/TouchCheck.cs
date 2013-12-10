@@ -20,7 +20,9 @@ public class TouchCheck : MonoBehaviour {
 		switch(Input.GetTouch(0).phase)
 		{
 			case TouchPhase.Began:
-				Application.LoadLevel( "scene2" );
+				GameObject go = GameObject.Find( "SceneMerger" );
+				go.GetComponent<SceneMerger>().SetSceneActive( "scene1", false );
+				go.GetComponent<SceneMerger>().SetSceneActive( "scene2", true );
 				break;
 			case TouchPhase.Moved:
 				break;	
