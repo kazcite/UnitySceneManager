@@ -28,6 +28,7 @@ public class SceneMerger : MonoBehaviour {
 			if( go != currentScene && go != sceneMerger && go.transform.parent == null ) {
 				// commonシーンと初期シーンを読み込み
 				// TODO:初期シーンのリスト化、コンストラクタ的なコンポーネントの呼び出し
+				if( go.name == "Camera" ) { continue; }
 				if( go.name == scenes[initialScene] || go.name == "common" ) {
 					go.transform.parent = currentScene.transform;
 					go.SetActive ( true );
