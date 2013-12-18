@@ -31,10 +31,10 @@ public class SceneMerger : MonoBehaviour {
 				if( go.name == "Camera" ) { continue; }
 				if( go.name == scenes[initialScene] || go.name == "common" ) {
 					go.transform.parent = currentScene.transform;
-					go.SetActive ( true );
+					go.SetActiveRecursively ( true );
 				}else{
 					go.transform.parent = sceneMerger.transform;
-					go.SetActive ( false );
+					go.SetActiveRecursively ( false );
 				}
 			}
 		}
@@ -53,7 +53,7 @@ public class SceneMerger : MonoBehaviour {
 	{
 		foreach ( GameObject go in FindObjectsOfTypeAll( typeof(GameObject) ) ) {
 			if( go.name == sceneName ) {
-				go.SetActive( flg );
+				go.SetActiveRecursively( flg );
 				
 				if( flg ) {
 					// TODO:コンストラクタ的なコンポーネントの呼び出し
